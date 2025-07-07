@@ -64,6 +64,7 @@ graph TB
     %% Database Connections
     API <--> PG
     API <--> MG
+    WEB <--> PG
 
     
     %% Management
