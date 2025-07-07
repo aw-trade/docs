@@ -35,34 +35,28 @@ graph TB
     end
     
     subgraph "Data Layer"
-        PG[(PostgreSQL<br/>Trading Results)]
         MG[(MongoDB<br/>Configurations)]
+        PG[(PostgreSQL<br/>Trading Results)]
         RD[(Redis<br/>Pub/Sub)]
-    end
-    
-    subgraph "Core Services"
-        MS[Market Streamer<br/>stream-rust<br/>Port: 8888]
-        RSI[RSI Algorithm<br/>rsi-algo<br/>Port: 9999]
-        OB[Order Book Algorithm<br/>order-book-algo<br/>Port: 9999]
-        TS[Trading Simulator<br/>trade-simulator<br/>Port: 8003]
-        API[Orchestration API<br/>orch-api<br/>Port: 8000]
+
+  
     end
     
     subgraph "Frontend"
-        WEB[Web Dashboard<br/>front-app<br/>Port: 8501]
+        WEB[Web Dashboard<br/>streamlit app<br/>Port: 8501]
     end
     
-    subgraph "Infrastructure"
-        K8S[Kubernetes<br/>k8s-deploy]
-        TF[Terraform<br/>tf-gcp]
+    subgraph "Core Services"
+        MS[Market Streamer<br/>Rust Container<br/>Port: 8888]
+        ALGO[Algorithm of Choice<br/>Rust Container<br/> Port: 9999]
+        TS[Trading Simulator<br/>Rust Container<br/>Port: 8003]
+        API[Orchestration API Server <br/>fast-api<br/>Port: 8000]
     end
     
     %% Data Flow
     CB -->|WebSocket| MS
-    MS -->|UDP Market Data| RSI
-    MS -->|UDP Market Data| OB
-    RSI -->|UDP Signals| TS
-    OB -->|UDP Signals| TS
+    MS -->|UDP Market Data| ALGO
+    ALGO -->|UDP Signals| TS
     TS -->|Redis Pub/Sub| RD
     RD -->|Statistics| API
     API <-->|REST API| WEB
@@ -70,29 +64,19 @@ graph TB
     %% Database Connections
     API <--> PG
     API <--> MG
-    TS --> RD
+
     
     %% Management
-    WEB -->|HTTP| API
     API -->|Docker Compose| TS
-    API -->|Docker Compose| RSI
-    API -->|Docker Compose| OB
+    API -->|Docker Compose| ALGO
     API -->|Docker Compose| MS
-    
-    %% Infrastructure
-    K8S -.->|Deployment| MS
-    K8S -.->|Deployment| RSI
-    K8S -.->|Deployment| OB
-    K8S -.->|Deployment| TS
-    K8S -.->|Deployment| API
-    TF -.->|Provision| K8S
     
     classDef rust fill:#f9f,stroke:#333,stroke-width:2px
     classDef python fill:#3f9,stroke:#333,stroke-width:2px
     classDef database fill:#bbf,stroke:#333,stroke-width:2px
     classDef external fill:#fbb,stroke:#333,stroke-width:2px
     
-    class MS,RSI,OB,TS rust
+    class MS,ALGO,TS rust
     class API,WEB python
     class PG,MG,RD database
     class CB external
@@ -223,8 +207,6 @@ graph TB
 ### Infrastructure
 - **Docker**: Containerization
 - **Docker Compose**: Local orchestration
-- **Kubernetes**: Production deployment
-- **Terraform**: Infrastructure as Code (GCP)
 
 ## 🚀 Quick Start
 
@@ -331,20 +313,7 @@ cd orch-api/docker
 docker-compose up -d
 ```
 
-### Kubernetes (Production)
-```bash
-cd k8s-deploy
-./setup-trading-cluster.sh
-kubectl apply -f k8s-trading-manifests.yaml
-```
 
-### Google Cloud Platform (Terraform)
-```bash
-cd tf-gcp
-terraform init
-terraform plan
-terraform apply
-```
 
 ## 📊 Monitoring
 
@@ -406,12 +375,6 @@ cargo build            # Development build
 cargo test             # Run tests
 ```
 
-### Python Development
-```bash
-pip install -r requirements.txt
-python -m pytest tests/           # Run tests
-black .                          # Code formatting
-```
 
 ### Database Migrations
 ```bash
@@ -433,9 +396,6 @@ psql -h localhost -U trading_user -d trading_results -f init.sql
 - Commit messages: Use conventional commits format
 - Documentation: Update README for significant changes
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🚨 Disclaimer
 
