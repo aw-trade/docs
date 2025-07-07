@@ -11,11 +11,11 @@ A comprehensive, microservices-based algorithmic trading platform for cryptocurr
 - [Quick Start](#quick-start)
 - [Configuration](#configuration)
 - [Development](#development)
-- [Deployment](#deployment)
+- [Repositories](#repositories)
 - [Monitoring](#monitoring)
 - [Contributing](#contributing)
 
-## 🎯 System Overview
+## System Overview
 
 AW-Trade is a real-time algorithmic trading system designed for cryptocurrency markets. It follows a microservices architecture where each component handles a specific responsibility:
 
@@ -26,7 +26,7 @@ AW-Trade is a real-time algorithmic trading system designed for cryptocurrency m
 - **Web dashboard** for monitoring and control
 - **Persistent storage** with PostgreSQL and MongoDB
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 graph TB
@@ -83,7 +83,7 @@ graph TB
     class CB external
 ```
 
-## 🧩 Components
+## Components
 
 ### 1. Stream-Rust (Market Data Streamer)
 **Technology:** Rust, Tokio, WebSocket  
@@ -186,7 +186,7 @@ graph TB
 - Performance visualization
 - Historical simulation browser
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Backend Services
 - **Rust**: High-performance market data processing and algorithms
@@ -209,7 +209,7 @@ graph TB
 - **Docker**: Containerization
 - **Docker Compose**: Local orchestration
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Docker & Docker Compose
@@ -256,7 +256,7 @@ cd front-app && pip install -r requirements.txt && streamlit run app.py
 ### 4. Access the Dashboard
 Open http://localhost:8501 in your browser to access the web interface.
 
-## ⚙️ Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -306,17 +306,16 @@ REDIS_HOST=localhost                # Redis host
 REDIS_PORT=6379                     # Redis port
 ```
 
-## 🐳 Deployment
+## Repositories
 
-### Docker Compose (Local Development)
-```bash
-cd orch-api/docker
-docker-compose up -d
-```
+- https://github.com/aw-trade/orch-api
+- https://github.com/aw-trade/front-app
+- https://github.com/aw-trade/trade-simulator
+- https://github.com/aw-trade/rsi-algo
+- https://github.com/aw-trade/order-book-algo
+- https://github.com/aw-trade/market-streamer
 
-
-
-## 📊 Monitoring
+## Monitoring
 
 ### Health Checks
 - **API Health**: `GET /health`
@@ -367,7 +366,7 @@ curl -X POST "http://localhost:8000/simulation/start" \
 curl "http://localhost:8000/results/simulation/{run_id}"
 ```
 
-## 🔧 Development
+## Development
 
 ### Building Rust Components
 ```bash
@@ -383,7 +382,14 @@ cd orch-api/src/database/schemas
 psql -h localhost -U trading_user -d trading_results -f init.sql
 ```
 
-## 🤝 Contributing
+
+## Future plans
+
+1. move from docker compose to k8s.
+2. migrate to cloud native setup
+3. add more trading algorithms using statistical modeling and ML.
+
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -398,7 +404,7 @@ psql -h localhost -U trading_user -d trading_results -f init.sql
 - Documentation: Update README for significant changes
 
 
-## 🚨 Disclaimer
+## Disclaimer
 
 This software is for educational and research purposes only. Do not use for actual trading without thorough testing and understanding of the risks involved. Cryptocurrency trading involves substantial risk of loss.
 
