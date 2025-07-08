@@ -21,7 +21,7 @@ AW-Trade is a real-time algorithmic trading system designed for cryptocurrency m
 
 - **Real-time market data streaming** from exchanges (Coinbase Pro)
 - **Multiple trading algorithms** (RSI, Order Book Imbalance)
-- **Trading simulation** with portfolio management
+- **Trading simulation** with strategy management
 - **Orchestration API** for managing simulations
 - **Web dashboard** for monitoring and control
 - **Persistent storage** with PostgreSQL and MongoDB
